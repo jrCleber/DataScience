@@ -123,3 +123,5 @@ class DSAmbiente:
 meta = Meta()
 meta.set_meta('datetime', dt(2020,6,14,8,41))
 
+#INSTANCIANDO OBJETO
+ambiente = DSAmbiente()
