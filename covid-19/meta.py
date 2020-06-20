@@ -11,9 +11,11 @@ class Meta:
             '__email__' : 'email@dominio.com',
             '__status__' : 'Em produção',
             '__credits__' : ['Cleber Wilson'],
-            '__url__' : 'https://github.com/jrCleber/python-para-dados'
+            '__url__' : 'https://github.com/jrCleber'
         }
-    def get_meta(self):
-        return self._metadados
+    def get_meta(self, indice=None):
+        if indice == None:
+            return self._metadados
+        return self._metadados[indice]
     def set_meta(self, indice, valor):
         self._metadados[indice] = valor
