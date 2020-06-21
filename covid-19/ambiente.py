@@ -13,9 +13,9 @@ from datetime import datetime as dt
 class DSAmbiente:
     def __init__(self):
         self._diretorios = '001 - Dados Originais', '002 - Dados Preparados', '003 - Analises', '004 - Dados Upload', '005 - Insigths', '006 - Final', '_versionamento_'
-        self._path = path.home() / 'Desktop' / 'Python'
+        self._path = path.home() / 'Desktop'
         self._dirwork = 'Analises'
-        self._criacao = self.get_path()/self.get_dirwork()
+        self._criacao = None
         self._desktop = path.cwd()
             
     def get_path(self):
@@ -32,8 +32,6 @@ class DSAmbiente:
         self._diretorios = valor
     def get_criacao(self):
         return self._criacao
-    def set_criacao(self, valor):
-        self._criacao = valor
     def set_desktop(self, valor):
         self._desktop = valor
     def get_desktop(self):
@@ -42,15 +40,16 @@ class DSAmbiente:
     #função que constroi oambiente de trabalho para DataScience
     def construcao(self, file):
         ambiente = None
-        if not path.is_dir(self.get_criacao()):
-            print('Path inesistente')
-            print('Criando Path...')
+        self._criacao = self._path / self._dirwork
+        if not path.is_dir(self._criacao):
+            print('Ambiente inesistente')
+            print('Criando ambiente...')
             try:
-                path.mkdir(self.get_criacao())
+                path.mkdir(self._criacao)
                 ambiente = True
             except FileNotFoundError as e:
                 print('[WinError 3] O sistema não consegue encontrar o caminho especificado em:')
-                print(self.get_criacao())
+                print(self._criacao)
                 ambiente = False
         else:
             ambiente = True
@@ -60,19 +59,19 @@ class DSAmbiente:
         if ambiente:
             chdir(self.get_criacao())
             for pasta in self.get_dir():
-                if not path(self.get_criacao() / pasta).exists():
-                    path.mkdir(self.get_criacao() / pasta)
-                if pasta == self.get_dir()[0]:
-                    local = self.get_criacao() / self.get_dir()[0]
+                if not path(self._criacao / pasta).exists():
+                    path.mkdir(self._criacao / pasta)
+                if pasta == self._diretorios[0]:
+                    local = self._criacao / self._diretorios[0]
                     chdir(local)
                     self.copy_file(file, local)
                     
                 elif pasta == self.get_dir()[1]:
-                    local = self.get_criacao() / self.get_dir()[1]
+                    local = self._criacao / self._diretorios[1]
                     chdir(local)
-                    self.copy_file(file, local)                        
+                    self.copy_file(file, local)            
+            print('Ambiente criado com sucesso em: \n', self._criacao)
         chdir(self.get_desktop())
-        print('Ambiente criado com sucesso em: \n', self.get_criacao())
     
     #função que copia um um arquivo de um dataset expecífico e cola dentro do diretório de trabalho
     def copy_file(self, file, local):
@@ -112,7 +111,7 @@ class DSAmbiente:
     retorna o path do arquivo de trabalho que foi copiado para dentro do ambiente de trabalho
     """
     def file_data_ambiente(self):
-        dir_file = self.get_criacao() / self.get_dir()[1]
+        dir_file = self._criacao / _diretorios[1]
         if not path(dir_file).exists():
             print('E nescessário criar o ambiente.\nUtilize o método: def construcao(file), para criar o ambiente.')
         else:

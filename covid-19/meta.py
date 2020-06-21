@@ -1,7 +1,8 @@
 # coding: utf-8
 
 class Meta:
-    def __init__(self):
+    def __init__(self):        
+        from datetime import datetime
         self._metadados = {
             '__author__' : 'Cleber Wilson',
             '__version__' : '1.0.0',
@@ -13,6 +14,8 @@ class Meta:
             '__credits__' : ['Cleber Wilson'],
             '__url__' : 'https://github.com/jrCleber'
         }
+        self.dt = datetime
+        
     def get_meta(self, indice=None):
         if indice == None:
             return self._metadados
